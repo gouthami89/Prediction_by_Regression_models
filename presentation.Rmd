@@ -1,0 +1,68 @@
+---
+title: "Data products project"
+author: "Gouthami Senthamaraikkannan"
+date: "May 11, 2016"
+output: slidy_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Introduction
+
+This is a presentation depicting an app that predicts the enginer displacement of a car, given its mileage and no. of cylinders.
+
+i.e., the regressors considered in the model are
+
+- City mileage (gallons)
+- Highway mileage (gallons)
+- No. of cylinders
+
+and the output is
+
+- Enginer displacement
+
+## What the app does
+
+The regression model used for prediction is based on the "mpg" dataset released by EPA. All the variables in the data set are shown below.
+
+```{r summ, echo=FALSE}
+library(ggplot2)
+
+data("mpg")
+colnames(mpg)
+```
+
+## Correlation between regressors and regressand
+
+The following gives an idea of the correlation that exists mileage, no. of cylinders and the regressand, engine displacement.
+
+```{r pressure, echo= FALSE}
+library(corrplot)
+library(dplyr)
+
+mpg_r <- mpg[, c('displ', 'hwy', 'cty', 'cyl')]
+M <- cor(mpg_r)
+corrplot(M, method = 'circle')
+```
+
+## Linear model
+```{r model, echo = TRUE}
+m <- lm(displ~hwy+cty+cyl, data = mpg)
+m
+```
+
+## Prediction using the linear model
+```{r pred, echo=TRUE}
+hwy <- 7
+cty <- 5
+cyl <- 4
+d <- data.frame(hwy, cty, cyl)
+p <- predict(m, d)
+```
+
+Thus, the predicted engine displacement for the given values of hwy, cty & cyl is 
+```{r prv, echo = TRUE}
+p
+```
